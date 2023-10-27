@@ -11,7 +11,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Routes>
       <Route path="/" index element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/product" element={<Product />} />
+      <Route path="/product">
+        <Route path=":type" element={<Product />}>
+          <Route path=":subtype" element={<Product />}></Route>
+        </Route>
+        <Route index element={<Product />} />
+      </Route>
     </Routes>
   </BrowserRouter>
 );

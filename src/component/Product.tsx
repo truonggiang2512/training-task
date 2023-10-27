@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AcUnitOutlinedIcon from "@mui/icons-material/AcUnitOutlined";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import storage from "../Utils/storage";
 import { TOKEN } from "../Utils/constant";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -25,9 +25,8 @@ import { Product } from "../Utils/model";
 type Props = {};
 const drawerWidth = 240;
 const Product = (props: Props) => {
-  const adidasMenProducts = allProduct.filter((product) => {
-    return product.brand === "Adidas" && product.subcategoryId === 2; // 2 là ID của danh mục "Men" của Adidas
-  });
+  const navigate = useNavigate();
+  const params = useParams();
   let [dataPro, setDataPro] = useState<Product[]>([]);
   const filterBrand = (id: number): Product[] => {
     const newArr: Product[] = allProduct.filter(
@@ -45,7 +44,9 @@ const Product = (props: Props) => {
             const productsInCategory = allProduct.filter(
               (product) => product.categoryId === item.id
             );
+
             setDataPro(productsInCategory);
+            navigate(`/product/${item.name}`);
           }}
           label={`${item.name}`}
         >
@@ -63,6 +64,7 @@ const Product = (props: Props) => {
                     );
                   });
                   setDataPro(subcategoriesProduct);
+                  navigate(`/product/${item.name}/${itemsub.name}`);
                 }}
               />
             );
@@ -74,6 +76,7 @@ const Product = (props: Props) => {
   useEffect(() => {
     return setDataPro(allProduct);
   }, []);
+  useEffect(() => {}, [params.type]);
   useEffect(() => {}, [dataPro]);
   let token = storage.get(TOKEN);
   if (token) {
@@ -146,9 +149,10 @@ const Product = (props: Props) => {
                   >
                     <TreeItem nodeId="100" label="Shoes">
                       <TreeItem
-                        nodeId="10"
+                        nodeId="0"
                         onClick={() => {
                           setDataPro(allProduct);
+                          navigate(`/product`);
                         }}
                         label="All Shoes"
                       />
@@ -205,12 +209,3 @@ const Product = (props: Props) => {
 };
 
 export default Product;
-
-// [
-//   { id: 1, name: "Vat lieu xay dung" },
-//   { id: 2, name: "Vat lieu xay dung 2" },
-//   { id: 3, name: "Gach xay nha", parentId: 1 },
-//   { id: 4, name: "Gach xay nha", parentId: 1 },
-//   { id: 5, name: "Gach xay nha", parentId: 1 },
-//   { id: 6, name: "Gach xay nha", parentId: 2 },
-// ];
