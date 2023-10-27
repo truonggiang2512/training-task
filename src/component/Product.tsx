@@ -16,23 +16,64 @@ import {
 
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import defaultValue from "../data/ProductData";
+import { allProduct, categories } from "../data/ProductData";
+import { Product } from "../Utils/model";
 type Props = {};
 const drawerWidth = 240;
 const Product = (props: Props) => {
-  let [dataPro, setDataPro] = useState(defaultValue);
-  let navigate = useNavigate();
+  const adidasMenProducts = allProduct.filter((product) => {
+    return product.brand === "Adidas" && product.subcategoryId === 2; // 2 là ID của danh mục "Men" của Adidas
+  });
+  let [dataPro, setDataPro] = useState<Product[]>([]);
+  const filterBrand = (id: number): Product[] => {
+    const newArr: Product[] = allProduct.filter(
+      (item) => item.categoryId === id
+    );
+    return newArr;
+  };
+  const renderCate = () => {
+    return categories.map((item) => {
+      return (
+        <TreeItem
+          key={item.id}
+          nodeId={`${item.id}`}
+          onClick={() => {
+            const productsInCategory = allProduct.filter(
+              (product) => product.categoryId === item.id
+            );
+            setDataPro(productsInCategory);
+          }}
+          label={`${item.name}`}
+        >
+          {item.subcategories?.map((itemsub) => {
+            return (
+              <TreeItem
+                key={itemsub.id}
+                nodeId={`${itemsub.id}`}
+                label={`${itemsub.name}`}
+                onClick={() => {
+                  const subcategoriesProduct = allProduct.filter((product) => {
+                    return (
+                      product.subcategoryId === itemsub.id &&
+                      product.categoryId === itemsub.parentId
+                    );
+                  });
+                  setDataPro(subcategoriesProduct);
+                }}
+              />
+            );
+          })}
+        </TreeItem>
+      );
+    });
+  };
+  useEffect(() => {
+    return setDataPro(allProduct);
+  }, []);
   useEffect(() => {}, [dataPro]);
   let token = storage.get(TOKEN);
   if (token) {
@@ -103,140 +144,15 @@ const Product = (props: Props) => {
                     defaultCollapseIcon={<ExpandMoreIcon />}
                     defaultExpandIcon={<ChevronRightIcon />}
                   >
-                    <TreeItem
-                      nodeId="10"
-                      onClick={() => {
-                        setDataPro(defaultValue);
-                      }}
-                      label="All Shoes"
-                    />
-                    <TreeItem nodeId="1" label="Men">
+                    <TreeItem nodeId="100" label="Shoes">
                       <TreeItem
+                        nodeId="10"
                         onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.type === "Adidas"
-                            )
-                          );
+                          setDataPro(allProduct);
                         }}
-                        nodeId="1.1"
-                        label="Adidas"
+                        label="All Shoes"
                       />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter((item) => item.type === "Nike")
-                          );
-                        }}
-                        nodeId="1.2"
-                        label="Nike"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter((item) => item.type === "Van")
-                          );
-                        }}
-                        nodeId="1.3"
-                        label="Van"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.type === "Converse"
-                            )
-                          );
-                        }}
-                        nodeId="1.4"
-                        label="Converse"
-                      />
-                    </TreeItem>
-                    <TreeItem nodeId="2" label="Women">
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.type === "Adidas"
-                            )
-                          );
-                        }}
-                        nodeId="2.1"
-                        label="Adidas"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter((item) => item.type === "Nike")
-                          );
-                        }}
-                        nodeId="2.2"
-                        label="Nike"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter((item) => item.type === "Van")
-                          );
-                        }}
-                        nodeId="2.3"
-                        label="Van"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.type === "Converse"
-                            )
-                          );
-                        }}
-                        nodeId="2.4"
-                        label="Converse"
-                      />
-                    </TreeItem>
-                    <TreeItem nodeId="3" label="Price">
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.price > 200 && item.price < 300
-                            )
-                          );
-                        }}
-                        nodeId="3.1"
-                        label="200-300 $"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.price > 300 && item.price < 400
-                            )
-                          );
-                        }}
-                        nodeId="3.2"
-                        label="300-400 $"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter(
-                              (item) => item.price > 400 && item.price < 500
-                            )
-                          );
-                        }}
-                        nodeId="3.3"
-                        label="400-500 $"
-                      />
-                      <TreeItem
-                        onClick={() => {
-                          setDataPro(
-                            defaultValue.filter((item) => item.price > 500)
-                          );
-                        }}
-                        nodeId="2.4"
-                        label="> 500 $"
-                      />
+                      {renderCate()}
                     </TreeItem>
                   </TreeView>
                 </ListItem>
@@ -248,6 +164,7 @@ const Product = (props: Props) => {
             component="main"
             sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
           >
+            <Toolbar />
             <Toolbar />
 
             <Grid
@@ -288,3 +205,12 @@ const Product = (props: Props) => {
 };
 
 export default Product;
+
+// [
+//   { id: 1, name: "Vat lieu xay dung" },
+//   { id: 2, name: "Vat lieu xay dung 2" },
+//   { id: 3, name: "Gach xay nha", parentId: 1 },
+//   { id: 4, name: "Gach xay nha", parentId: 1 },
+//   { id: 5, name: "Gach xay nha", parentId: 1 },
+//   { id: 6, name: "Gach xay nha", parentId: 2 },
+// ];
