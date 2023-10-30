@@ -1,7 +1,19 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import AcUnitOutlinedIcon from "@mui/icons-material/AcUnitOutlined";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import storage from "../Utils/storage";
 import { TOKEN } from "../Utils/constant";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -13,7 +25,6 @@ import {
   useTreeItem,
   TreeItemContentProps,
 } from "@mui/x-tree-view/TreeItem";
-
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,58 +33,121 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import { allProduct, categories } from "../data/ProductData";
 import { Product } from "../Utils/model";
+import { debounce } from "lodash";
 type Props = {};
 const drawerWidth = 240;
 const Product = (props: Props) => {
-  const adidasMenProducts = allProduct.filter((product) => {
-    return product.brand === "Adidas" && product.subcategoryId === 2; // 2 là ID của danh mục "Men" của Adidas
-  });
+  const navigate = useNavigate();
+  const params = useParams();
   let [dataPro, setDataPro] = useState<Product[]>([]);
-  const filterBrand = (id: number): Product[] => {
-    const newArr: Product[] = allProduct.filter(
-      (item) => item.categoryId === id
-    );
-    return newArr;
-  };
+  const [brand, setBrand] = React.useState("");
+  const rootBrands = categories.filter(
+    (category) => category.parentId === null
+  );
+
+  // loc ra cac brand duy nhat
   const renderCate = () => {
-    return categories.map((item) => {
+    return rootBrands.map((item) => {
+      const subcategories = categories.filter(
+        (category) => category.parentId === item.id
+      );
+      // loc ra cac subcate thuoc cac brand duy nhat
       return (
         <TreeItem
           key={item.id}
           nodeId={`${item.id}`}
           onClick={() => {
-            const productsInCategory = allProduct.filter(
-              (product) => product.categoryId === item.id
-            );
+            const productsInCategory = allProduct.filter((product) => {
+              return product.brand === item.name;
+            });
             setDataPro(productsInCategory);
+            navigate(`/product/${item.name}`);
           }}
           label={`${item.name}`}
         >
-          {item.subcategories?.map((itemsub) => {
-            return (
-              <TreeItem
-                key={itemsub.id}
-                nodeId={`${itemsub.id}`}
-                label={`${itemsub.name}`}
-                onClick={() => {
-                  const subcategoriesProduct = allProduct.filter((product) => {
-                    return (
-                      product.subcategoryId === itemsub.id &&
-                      product.categoryId === itemsub.parentId
-                    );
-                  });
-                  setDataPro(subcategoriesProduct);
-                }}
-              />
-            );
-          })}
+          {subcategories.map((subcategory) => (
+            <TreeItem
+              key={subcategory.id}
+              label={`${subcategory.name}`}
+              nodeId={`${subcategory.id}`}
+              onClick={() => {
+                const productsInCategory = allProduct.filter((product) => {
+                  return product.brand === item.name;
+                });
+                const productSubsCate = productsInCategory.filter((product) => {
+                  return product.categoryId === subcategory.id;
+                });
+                setDataPro(productSubsCate);
+                navigate(`/product/${item.name}/${subcategory.name}`);
+              }}
+            />
+          ))}
         </TreeItem>
       );
     });
   };
+  //debounce input
+
+  const debouncedSearch = debounce(async (value) => {
+    const searchResult = allProduct.filter((product) => {
+      return product.name.toLowerCase().includes(value.toLowerCase().trim());
+    });
+    setDataPro(searchResult);
+  }, 300);
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    debouncedSearch(e.target.value);
+  }
+  const handleSelect = (e: SelectChangeEvent) => {
+    const searchResult = allProduct.filter((product) => {
+      return product.name
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase().trim());
+    });
+    setDataPro(searchResult);
+    setBrand(e.target.value);
+  };
+  const renderProduct = () => {
+    return (
+      <Grid container spacing={2}>
+        {dataPro.map((product, key) => {
+          const subcategory = categories.find(
+            (sub) => sub.id === product.categoryId
+          );
+
+          const productUrl = `/product/${product.brand}/${subcategory?.name}/${product.id}`;
+          return (
+            <Grid item xs={2} sm={4} md={4} key={key}>
+              <Box
+                onClick={() => {
+                  navigate(productUrl);
+                }}
+              >
+                <Box sx={{ textAlign: "center", margin: "auto" }}>
+                  <img
+                    height="100%"
+                    width="80%"
+                    src={`${product.image}`}
+                    alt=""
+                  />
+                </Box>
+                <Box sx={{ textAlign: "left" }}>
+                  <Typography sx={{ color: "brown" }}>Just in</Typography>
+                  <Typography>{product.name}</Typography>
+                  <Typography>{product.price}$</Typography>
+                </Box>
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    );
+  };
+
+  renderProduct();
   useEffect(() => {
     return setDataPro(allProduct);
   }, []);
+  useEffect(() => {}, [params.type]);
   useEffect(() => {}, [dataPro]);
   let token = storage.get(TOKEN);
   if (token) {
@@ -146,9 +220,10 @@ const Product = (props: Props) => {
                   >
                     <TreeItem nodeId="100" label="Shoes">
                       <TreeItem
-                        nodeId="10"
+                        nodeId="0"
                         onClick={() => {
                           setDataPro(allProduct);
+                          navigate(`/product`);
                         }}
                         label="All Shoes"
                       />
@@ -165,35 +240,38 @@ const Product = (props: Props) => {
             sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
           >
             <Toolbar />
+            <Box sx={{ display: "flex", gap: 3, justifyContent: "left" }}>
+              <Box>
+                <TextField
+                  id="filled-search"
+                  label="Search for Product"
+                  type="search"
+                  variant="filled"
+                  onChange={handleChange}
+                />
+              </Box>
+              <Box sx={{ width: "10%" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Brand</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={brand}
+                    label="Brand"
+                    onChange={handleSelect}
+                  >
+                    <MenuItem value={"Adidas"}>Adidas</MenuItem>
+                    <MenuItem value={"Nike"}>Nike</MenuItem>
+                    <MenuItem value={"Van"}>Van</MenuItem>
+                    <MenuItem value={"Converse"}>Converse</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box>
+
             <Toolbar />
 
-            <Grid
-              container
-              spacing={{ xs: 2 }}
-              columns={{ xs: 2, md: 8, xl: 12 }}
-            >
-              {dataPro.map((item, key) => {
-                return (
-                  <Grid item xs={2} sm={4} md={4} key={key}>
-                    <Box>
-                      <Box sx={{ textAlign: "center", margin: "auto" }}>
-                        <img
-                          height="100%"
-                          width="80%"
-                          src={`${item.image}`}
-                          alt=""
-                        />
-                      </Box>
-                      <Box sx={{ textAlign: "left" }}>
-                        <Typography sx={{ color: "brown" }}>Just in</Typography>
-                        <Typography>{item.name}</Typography>
-                        <Typography>{item.price}$</Typography>
-                      </Box>
-                    </Box>
-                  </Grid>
-                );
-              })}
-            </Grid>
+            {renderProduct()}
           </Box>
         </Box>
       </Container>
@@ -205,12 +283,3 @@ const Product = (props: Props) => {
 };
 
 export default Product;
-
-// [
-//   { id: 1, name: "Vat lieu xay dung" },
-//   { id: 2, name: "Vat lieu xay dung 2" },
-//   { id: 3, name: "Gach xay nha", parentId: 1 },
-//   { id: 4, name: "Gach xay nha", parentId: 1 },
-//   { id: 5, name: "Gach xay nha", parentId: 1 },
-//   { id: 6, name: "Gach xay nha", parentId: 2 },
-// ];
