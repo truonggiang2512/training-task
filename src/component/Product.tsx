@@ -106,7 +106,44 @@ const Product = (props: Props) => {
     setDataPro(searchResult);
     setBrand(e.target.value);
   };
-  console.log("RENDERRRRRRRRRRRRRRRRR");
+  const renderProduct = () => {
+    return (
+      <Grid container spacing={2}>
+        {dataPro.map((product, key) => {
+          const subcategory = categories.find(
+            (sub) => sub.id === product.categoryId
+          );
+
+          const productUrl = `/product/${product.brand}/${subcategory?.name}/${product.id}`;
+          return (
+            <Grid item xs={2} sm={4} md={4} key={key}>
+              <Box
+                onClick={() => {
+                  navigate(productUrl);
+                }}
+              >
+                <Box sx={{ textAlign: "center", margin: "auto" }}>
+                  <img
+                    height="100%"
+                    width="80%"
+                    src={`${product.image}`}
+                    alt=""
+                  />
+                </Box>
+                <Box sx={{ textAlign: "left" }}>
+                  <Typography sx={{ color: "brown" }}>Just in</Typography>
+                  <Typography>{product.name}</Typography>
+                  <Typography>{product.price}$</Typography>
+                </Box>
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    );
+  };
+
+  renderProduct();
   useEffect(() => {
     return setDataPro(allProduct);
   }, []);
@@ -234,37 +271,7 @@ const Product = (props: Props) => {
 
             <Toolbar />
 
-            <Grid
-              container
-              spacing={{ xs: 2 }}
-              columns={{ xs: 2, md: 8, xl: 12 }}
-            >
-              {dataPro.map((item, key) => {
-                return (
-                  <Grid item xs={2} sm={4} md={4} key={key}>
-                    <Box
-                      onClick={() => {
-                        // navigate()
-                      }}
-                    >
-                      <Box sx={{ textAlign: "center", margin: "auto" }}>
-                        <img
-                          height="100%"
-                          width="80%"
-                          src={`${item.image}`}
-                          alt=""
-                        />
-                      </Box>
-                      <Box sx={{ textAlign: "left" }}>
-                        <Typography sx={{ color: "brown" }}>Just in</Typography>
-                        <Typography>{item.name}</Typography>
-                        <Typography>{item.price}$</Typography>
-                      </Box>
-                    </Box>
-                  </Grid>
-                );
-              })}
-            </Grid>
+            {renderProduct()}
           </Box>
         </Box>
       </Container>
