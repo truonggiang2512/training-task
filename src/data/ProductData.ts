@@ -8,8 +8,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-prophere.png",
     price: 350,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 2,
+    categoryId: 6,
   },
   {
     id: 102,
@@ -18,8 +17,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-prophere-black-white.png",
     price: 450,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 3,
+    categoryId: 7,
   },
   {
     id: 103,
@@ -28,8 +26,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-prophere-customize.png",
     price: 375,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 2,
+    categoryId: 6,
   },
   {
     id: 104,
@@ -38,8 +35,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-super-star-red.png",
     price: 550,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 3,
+    categoryId: 7,
   },
   {
     id: 105,
@@ -48,8 +44,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-swift-run.png",
     price: 350,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 2,
+    categoryId: 6,
   },
   {
     id: 106,
@@ -58,8 +53,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-tenisky-super-star.png",
     price: 250,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 3,
+    categoryId: 7,
   },
   {
     id: 107,
@@ -68,8 +62,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-ultraboost-4.png",
     price: 350,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 2,
+    categoryId: 7,
   },
   {
     id: 108,
@@ -78,8 +71,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/adidas-yeezy-350.png",
     price: 470,
     brand: "Adidas",
-    categoryId: 1,
-    subcategoryId: 3,
+    categoryId: 6,
   },
   {
     id: 109,
@@ -88,8 +80,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-adapt-bb.png",
     price: 480,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 8,
   },
   {
     id: 110,
@@ -98,8 +89,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-air-max-97.png",
     price: 440,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 6,
+    categoryId: 9,
   },
   {
     id: 111,
@@ -108,8 +98,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-air-max-97-blue.png",
     price: 350,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 8,
   },
   {
     id: 112,
@@ -118,8 +107,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-air-max-270-react.png",
     price: 455,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 6,
+    categoryId: 9,
   },
   {
     id: 113,
@@ -128,8 +116,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-flyknit.png",
     price: 260,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 6,
+    categoryId: 9,
   },
   {
     id: 114,
@@ -138,8 +125,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-react-element.png",
     price: 550,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 8,
   },
   {
     id: 115,
@@ -148,8 +134,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-shox-tl.png",
     price: 520,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 6,
+    categoryId: 8,
   },
   {
     id: 116,
@@ -158,8 +143,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/nike-sp-dunk.png",
     price: 350,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 9,
   },
   {
     id: 117,
@@ -168,8 +152,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/van-old-school.png",
     price: 400,
     brand: "Van",
-    categoryId: 7,
-    subcategoryId: 8,
+    categoryId: 10,
   },
   {
     id: 118,
@@ -178,8 +161,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/vans-black-black.png",
     price: 450,
     brand: "Van",
-    categoryId: 7,
-    subcategoryId: 9,
+    categoryId: 11,
   },
   {
     id: 119,
@@ -188,8 +170,7 @@ const allProduct: Product[] = [
     image: "https://shop.cyberlearn.vn/images/converse-chuck-taylor.png",
     price: 450,
     brand: "Converse",
-    categoryId: 10,
-    subcategoryId: 12,
+    categoryId: 12,
   },
   {
     id: 119,
@@ -199,8 +180,7 @@ const allProduct: Product[] = [
       "https://static.nike.com/a/images/t_PDP_864_v1,f_auto,q_auto:eco/af670b24-8fc2-4c2d-8299-51a9ef339b43/zoom-mercurial-vapor-15-academy-xxv-mg-multi-ground-football-boot-6QF20M.png",
     price: 490,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 8,
   },
   {
     id: 120,
@@ -210,8 +190,7 @@ const allProduct: Product[] = [
       "https://static.nike.com/a/images/t_PDP_864_v1,f_auto,q_auto:eco/c547d70f-4867-4260-9d44-4efce7c65952/renew-ride-3-road-running-shoes-fzS091.png",
     price: 560,
     brand: "Nike",
-    categoryId: 4,
-    subcategoryId: 5,
+    categoryId: 9,
   },
 ];
 
@@ -219,38 +198,31 @@ const categories: Category[] = [
   {
     id: 1,
     name: "Adidas",
-    parentId: 0,
-    subcategories: [
-      { id: 2, name: "Men", parentId: 1 },
-      { id: 3, name: "Women", parentId: 1 },
-    ],
+    parentId: null,
+  },
+  {
+    id: 2,
+    name: "Nike",
+    parentId: null,
+  },
+  {
+    id: 3,
+    name: "Van",
+    parentId: null,
   },
   {
     id: 4,
-    name: "Nike",
-    parentId: 0,
-    subcategories: [
-      { id: 5, name: "Men", parentId: 4 },
-      { id: 6, name: "Women", parentId: 4 },
-    ],
-  },
-  {
-    id: 7,
-    name: "Van",
-    parentId: 0,
-    subcategories: [
-      { id: 8, name: "Men", parentId: 7 },
-      { id: 9, name: "Women", parentId: 7 },
-    ],
-  },
-  {
-    id: 10,
     name: "Converse",
-    parentId: 0,
-    subcategories: [
-      { id: 11, name: "Men", parentId: 10 },
-      { id: 12, name: "Women", parentId: 10 },
-    ],
+    parentId: null,
   },
+
+  { id: 6, name: "Adidas Men's Shoes", parentId: 1 },
+  { id: 7, name: "Adidas Women's Shoes", parentId: 1 },
+  { id: 8, name: "Nike Men's Shoes", parentId: 2 },
+  { id: 9, name: "Nike Women's Shoes", parentId: 2 },
+  { id: 10, name: "Van Men's Shoes", parentId: 3 },
+  { id: 11, name: "Van Women's Shoes", parentId: 3 },
+  { id: 12, name: "Converse Men's Shoes", parentId: 4 },
+  { id: 13, name: "Converse Women's Shoes", parentId: 4 },
 ];
 export { allProduct, categories };
