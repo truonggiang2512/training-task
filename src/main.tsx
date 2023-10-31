@@ -6,7 +6,6 @@ import Login from "./component/Login";
 import Product from "./component/Product";
 import "./style.css";
 import Detail from "./component/Detail";
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter basename="/">
     <Routes>

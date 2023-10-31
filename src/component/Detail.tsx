@@ -12,9 +12,14 @@ import {
 import AcUnitOutlinedIcon from "@mui/icons-material/AcUnitOutlined";
 import storage from "../Utils/storage";
 import { TOKEN } from "../Utils/constant";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
 
 type Props = {};
-
+function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  event.preventDefault();
+  console.info("You clicked a breadcrumb.");
+}
 const Detail = (props: Props) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -76,8 +81,32 @@ const Detail = (props: Props) => {
           </Box>
         </AppBar>
         <Toolbar />
+        <Toolbar />
 
-        <Box></Box>
+        <Box>
+          <div role="presentation" onClick={handleClick}>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link
+                onClick={() => {
+                  navigate(`/product/${params.type}`);
+                }}
+                underline="hover"
+                color="inherit"
+              >
+                {params.type}
+              </Link>
+              <Link
+                underline="hover"
+                color="inherit"
+                onClick={() => {
+                  navigate(`/product/${params.type}/${params.subtype}`);
+                }}
+              >
+                {params.subtype}
+              </Link>
+            </Breadcrumbs>
+          </div>
+        </Box>
         <Box>
           {productWithId.map((item) => {
             return (
